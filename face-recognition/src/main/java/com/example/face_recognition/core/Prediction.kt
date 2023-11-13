@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ml.quaterion.facenetdetection
+package com.example.face_recognition.core
 
 import android.graphics.Rect
 

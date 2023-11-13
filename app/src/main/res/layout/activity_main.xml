@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.ml.quaterion.facenetdetection.BoundingBoxOverlay
+    <com.example.face_recognition.core.BoundingBoxOverlay
         android:id="@+id/bbox_overlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,6 +42,16 @@
         android:text="start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/changeFacing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="change facing"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/face_selector"
+        app:layout_constraintStart_toEndOf="@id/start" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

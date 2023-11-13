@@ -1,6 +1,5 @@
-package com.example.facemoduletest.module
+package com.example.face_recognition
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_OPEN_DOCUMENT_TREE
@@ -19,11 +18,9 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.LifecycleOwner
+import com.example.face_recognition.core.FileReader
+import com.example.face_recognition.core.FrameAnalyser
 import com.google.common.util.concurrent.ListenableFuture
-import com.ml.quaterion.facenetdetection.BitmapUtils
-import com.ml.quaterion.facenetdetection.BoundingBoxOverlay
-import com.ml.quaterion.facenetdetection.FileReader
-import com.ml.quaterion.facenetdetection.FrameAnalyser
 import com.ml.quaterion.facenetdetection.model.FaceNetModel
 import com.ml.quaterion.facenetdetection.model.Models
 import java.util.concurrent.Executors
@@ -36,7 +33,7 @@ class FaceDetectorImpl(private val context: Context) : FaceDetector {
     private lateinit var faceNetModel: FaceNetModel
     private lateinit var fileReader: FileReader
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
-    private val cameraFacing = CameraSelector.LENS_FACING_FRONT
+    private var cameraFacing = CameraSelector.LENS_FACING_FRONT
     private var images = ArrayList<Pair<String, Bitmap>>()
 
     private val useGpu = true
@@ -52,17 +49,30 @@ class FaceDetectorImpl(private val context: Context) : FaceDetector {
         }
     }
 
-    override fun initialize(boundingBoxOverlay: BoundingBoxOverlay, previewView: PreviewView) {
+    override fun initialize(
+        boundingBoxOverlay: com.example.face_recognition.core.BoundingBoxOverlay,
+        previewView: PreviewView
+    ) {
         boundingBoxOverlay.cameraFacing = cameraFacing
         boundingBoxOverlay.setWillNotDraw(false)
         boundingBoxOverlay.setZOrderOnTop(true)
         this.previewView = previewView
         faceNetModel = FaceNetModel(context, modelInfo, useGpu, useXNNPack)
-        frameAnalyser = FrameAnalyser(context, boundingBoxOverlay, faceNetModel)
+        frameAnalyser = FrameAnalyser(
+            context,
+            boundingBoxOverlay,
+            faceNetModel
+        )
         fileReader = FileReader(faceNetModel)
     }
 
     override fun startCamera() {
+        startCameraPreview()
+    }
+
+    override fun changeCameraFacing() {
+        cameraFacing =
+            if (cameraFacing == CameraSelector.LENS_FACING_FRONT) CameraSelector.LENS_FACING_BACK else CameraSelector.LENS_FACING_FRONT
         startCameraPreview()
     }
 
@@ -86,6 +96,7 @@ class FaceDetectorImpl(private val context: Context) : FaceDetector {
     }
 
     private fun bindPreview(cameraProvider: ProcessCameraProvider) {
+        cameraProvider.unbindAll()
         val preview: Preview = Preview.Builder().build()
         val cameraSelector: CameraSelector = CameraSelector.Builder()
             .requireLensFacing(cameraFacing)
@@ -130,16 +141,31 @@ class FaceDetectorImpl(private val context: Context) : FaceDetector {
     }
 
     private fun getFixedBitmap(imageFileUri: Uri): Bitmap {
-        var imageBitmap = BitmapUtils.getBitmapFromUri(contentResolver, imageFileUri)
+        var imageBitmap = com.example.face_recognition.core.BitmapUtils.getBitmapFromUri(
+            contentResolver,
+            imageFileUri
+        )
         val exifInterface = ExifInterface(contentResolver.openInputStream(imageFileUri)!!)
         imageBitmap =
             when (exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_UNDEFINED
             )) {
-                ExifInterface.ORIENTATION_ROTATE_90 -> BitmapUtils.rotateBitmap(imageBitmap, 90f)
-                ExifInterface.ORIENTATION_ROTATE_180 -> BitmapUtils.rotateBitmap(imageBitmap, 180f)
-                ExifInterface.ORIENTATION_ROTATE_270 -> BitmapUtils.rotateBitmap(imageBitmap, 270f)
+                ExifInterface.ORIENTATION_ROTATE_90 -> com.example.face_recognition.core.BitmapUtils.rotateBitmap(
+                    imageBitmap,
+                    90f
+                )
+
+                ExifInterface.ORIENTATION_ROTATE_180 -> com.example.face_recognition.core.BitmapUtils.rotateBitmap(
+                    imageBitmap,
+                    180f
+                )
+
+                ExifInterface.ORIENTATION_ROTATE_270 -> com.example.face_recognition.core.BitmapUtils.rotateBitmap(
+                    imageBitmap,
+                    270f
+                )
+
                 else -> imageBitmap
             }
         return imageBitmap

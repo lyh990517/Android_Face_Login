@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ml.quaterion.facenetdetection
+package com.example.face_recognition.core
 
 import android.graphics.Bitmap
 import android.graphics.Rect
@@ -47,7 +47,7 @@ class FileReader( private var faceNetModel: FaceNetModel ) {
 
 
     // Given the Bitmaps, extract face embeddings from then and deliver the processed embedding to ProcessCallback.
-    fun run( data : ArrayList<Pair<String,Bitmap>> , callback: ProcessCallback ) {
+    fun run( data : ArrayList<Pair<String,Bitmap>> , callback: ProcessCallback) {
         numImages = data.size
         this.data = data
         this.callback = callback

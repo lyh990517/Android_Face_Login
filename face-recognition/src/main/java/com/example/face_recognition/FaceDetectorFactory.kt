@@ -1,4 +1,4 @@
-package com.example.facemoduletest.module
+package com.example.face_recognition
 
 import android.content.Context
 

@@ -12,12 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ml.quaterion.facenetdetection
+package com.example.face_recognition.core
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -35,9 +34,9 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Analyser class to process frames and produce detections.
-class FrameAnalyser( context: Context ,
-                     private var boundingBoxOverlay: BoundingBoxOverlay ,
-                     private var model: FaceNetModel
+class FrameAnalyser(context: Context,
+                    private var boundingBoxOverlay: BoundingBoxOverlay,
+                    private var model: FaceNetModel
                      ) : ImageAnalysis.Analyzer {
 
     private val realTimeOpts = FaceDetectorOptions.Builder()
@@ -89,7 +88,8 @@ class FrameAnalyser( context: Context ,
             val cameraXImage = image.image!!
             var frameBitmap = Bitmap.createBitmap( cameraXImage.width , cameraXImage.height , Bitmap.Config.ARGB_8888 )
             frameBitmap.copyPixelsFromBuffer( image.planes[0].buffer )
-            frameBitmap = BitmapUtils.rotateBitmap( frameBitmap , image.imageInfo.rotationDegrees.toFloat() )
+            frameBitmap =
+                BitmapUtils.rotateBitmap(frameBitmap, image.imageInfo.rotationDegrees.toFloat())
             //val frameBitmap = BitmapUtils.imageToBitmap( image.image!! , image.imageInfo.rotationDegrees )
 
             // Configure frameHeight and frameWidth for output2overlay transformation matrix.
@@ -121,7 +121,8 @@ class FrameAnalyser( context: Context ,
                     // Crop the frame using face.boundingBox.
                     // Convert the cropped Bitmap to a ByteBuffer.
                     // Finally, feed the ByteBuffer to the FaceNet model.
-                    val croppedBitmap = BitmapUtils.cropRectFromBitmap( cameraFrameBitmap , face.boundingBox )
+                    val croppedBitmap =
+                        BitmapUtils.cropRectFromBitmap(cameraFrameBitmap, face.boundingBox)
                     subject = model.getFaceEmbedding( croppedBitmap )
 
                     // Perform face mask detection on the cropped frame Bitmap.
