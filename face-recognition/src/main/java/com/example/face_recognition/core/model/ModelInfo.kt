@@ -1,6 +1,6 @@
 package com.ml.quaterion.facenetdetection.model
 
-class ModelInfo(
+internal class ModelInfo(
     val name : String ,
     val assetsFilename : String ,
     val cosineThreshold : Float ,

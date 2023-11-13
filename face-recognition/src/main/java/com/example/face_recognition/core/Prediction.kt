@@ -16,4 +16,4 @@ package com.example.face_recognition.core
 
 import android.graphics.Rect
 
-data class Prediction( var bbox : Rect, var label : String , var maskLabel : String = "" )
+internal data class Prediction( var bbox : Rect, var label : String , var maskLabel : String = "" )

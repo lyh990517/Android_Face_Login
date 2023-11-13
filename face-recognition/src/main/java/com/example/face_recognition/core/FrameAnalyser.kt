@@ -36,7 +36,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Analyser class to process frames and produce detections.
-class FrameAnalyser(context: Context,
+internal class FrameAnalyser(context: Context,
                     private var boundingBoxOverlay: BoundingBoxOverlay,
                     private var model: FaceNetModel
                      ) : ImageAnalysis.Analyzer {

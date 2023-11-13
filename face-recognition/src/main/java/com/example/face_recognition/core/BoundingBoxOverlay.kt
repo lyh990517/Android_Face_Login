@@ -38,7 +38,7 @@ class BoundingBoxOverlay( context: Context , attributeSet: AttributeSet )
     var cameraFacing : Int = CameraSelector.LENS_FACING_FRONT
 
     // This var is assigned in FrameAnalyser.kt
-    var faceBoundingBoxes: ArrayList<Prediction>? = null
+    internal var faceBoundingBoxes: ArrayList<Prediction>? = null
 
     // Determines whether or not "mask" or "no mask" should be displayed.
     var drawMaskLabel = true

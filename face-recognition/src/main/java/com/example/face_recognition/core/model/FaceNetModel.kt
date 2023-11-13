@@ -34,7 +34,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Utility class for FaceNet model
-class FaceNetModel( context : Context ,
+internal class FaceNetModel( context : Context ,
                     var model : ModelInfo ,
                     useGpu : Boolean ,
                     useXNNPack : Boolean) {

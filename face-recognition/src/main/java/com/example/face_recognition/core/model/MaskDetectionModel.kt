@@ -15,7 +15,7 @@ import java.nio.ByteBuffer
 
 // Mask Detection model
 // Source -> https://github.com/achen353/Face-Mask-Detector
-class MaskDetectionModel( context: Context ) {
+internal class MaskDetectionModel( context: Context ) {
 
     val MASK = "mask"
     val NO_MASK = "no mask"

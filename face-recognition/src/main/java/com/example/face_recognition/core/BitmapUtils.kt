@@ -28,7 +28,7 @@ import java.io.FileDescriptor
 import java.io.FileOutputStream
 
 // Helper class for operations on Bitmaps
-class BitmapUtils {
+internal class BitmapUtils {
 
     companion object {
 

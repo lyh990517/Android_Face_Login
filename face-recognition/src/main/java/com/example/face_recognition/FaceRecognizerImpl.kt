@@ -25,7 +25,7 @@ import com.ml.quaterion.facenetdetection.model.FaceNetModel
 import com.ml.quaterion.facenetdetection.model.Models
 import java.util.concurrent.Executors
 
-class FaceRecognizerImpl(private val context: Context) : FaceRecognizer {
+internal class FaceRecognizerImpl(private val context: Context) : FaceRecognizer {
 
     private val contentResolver = context.contentResolver
     private lateinit var previewView: PreviewView

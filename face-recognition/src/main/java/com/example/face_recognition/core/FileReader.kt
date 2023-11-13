@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // Utility class to read images from internal storage
-class FileReader( private var faceNetModel: FaceNetModel ) {
+internal class FileReader( private var faceNetModel: FaceNetModel ) {
 
     private val realTimeOpts = FaceDetectorOptions.Builder()
         .setPerformanceMode( FaceDetectorOptions.PERFORMANCE_MODE_FAST )
