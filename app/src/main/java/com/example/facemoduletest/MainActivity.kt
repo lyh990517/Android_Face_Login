@@ -1,7 +1,10 @@
 package com.example.facemoduletest
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.widget.Toast
 import com.example.facemoduletest.databinding.ActivityMainBinding
 import com.example.face_recognition.FaceRecognizerFactory
 
@@ -26,7 +29,11 @@ class MainActivity : AppCompatActivity() {
             faceRecognizer.changeCameraFacing()
         }
         faceRecognizer.getIdentifiedUser {
-            binding.userName.text = it
+            if (it != "Unknown") {
+                binding.userName.text = "Login Success!"
+            } else {
+                binding.userName.text = "Login Fail...!"
+            }
         }
     }
 
