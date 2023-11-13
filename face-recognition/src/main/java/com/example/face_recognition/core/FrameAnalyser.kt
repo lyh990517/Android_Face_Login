@@ -28,6 +28,8 @@ import com.ml.quaterion.facenetdetection.model.FaceNetModel
 import com.ml.quaterion.facenetdetection.model.MaskDetectionModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.pow
@@ -39,6 +41,7 @@ class FrameAnalyser(context: Context,
                     private var model: FaceNetModel
                      ) : ImageAnalysis.Analyzer {
 
+    private val identified = MutableSharedFlow<String>()
     private val realTimeOpts = FaceDetectorOptions.Builder()
             .setPerformanceMode( FaceDetectorOptions.PERFORMANCE_MODE_FAST )
             .build()
@@ -74,6 +77,13 @@ class FrameAnalyser(context: Context,
 
 
 
+    fun getIdentifiedUser(get: (String) -> Unit){
+        CoroutineScope(Dispatchers.Main).launch {
+            identified.collect{
+                get(it)
+            }
+        }
+    }
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(image: ImageProxy) {
         // If the previous frame is still being processed, then skip this frame
@@ -186,7 +196,7 @@ class FrameAnalyser(context: Context,
                                 names[ avgScores.indexOf( avgScores.minOrNull()!! ) ]
                             }
                         }
-
+                        identified.emit(bestScoreUserName)
                         predictions.add(
                             Prediction(
                                 face.boundingBox,

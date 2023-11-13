@@ -25,7 +25,7 @@ import com.ml.quaterion.facenetdetection.model.FaceNetModel
 import com.ml.quaterion.facenetdetection.model.Models
 import java.util.concurrent.Executors
 
-class FaceDetectorImpl(private val context: Context) : FaceDetector {
+class FaceRecognizerImpl(private val context: Context) : FaceRecognizer {
 
     private val contentResolver = context.contentResolver
     private lateinit var previewView: PreviewView
@@ -82,6 +82,12 @@ class FaceDetectorImpl(private val context: Context) : FaceDetector {
 
     override fun setFaceImage() {
         directoryAccessLauncher.launch(Intent(ACTION_OPEN_DOCUMENT_TREE))
+    }
+
+    override fun getIdentifiedUser(get: (String) -> Unit) {
+        frameAnalyser.getIdentifiedUser {
+            get(it)
+        }
     }
 
     private fun startCameraPreview() {
